@@ -1,3 +1,5 @@
+package ru.netology;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -6,45 +8,43 @@ public class Matrix {
 
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         int[][] colors = new int[SIZE][SIZE];
         Random random = new Random();
-        int[][] rotatedColors = new int[SIZE][SIZE];
-
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < SIZE; i++) {               // 1. Создание массива случайных чисел
             for (int j = 0; j < SIZE; j++) {
                 colors[i][j] = random.nextInt(256);
             }
         }
-        printMatrix(colors);
+        printMatrix(colors);                   // 2. Отображение исходного массива
         System.out.println("Выберите угол поворота: \n1. 90 градусов \n2. 180 градусов \n3. 270 градусов");
-        int rotation = sc.nextInt();
-        if (rotation == 3) {
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j < SIZE; j++) {
-                    rotatedColors[i][j] = colors[j][SIZE - 1 - i];
-                    System.out.format("%4d", rotatedColors[i][j]);
-                }
-                System.out.println();
-            }
-        } else if (rotation == 2) {
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j < SIZE; j++) {
-                    rotatedColors[i][j] = colors[SIZE - 1 - i][SIZE - 1 - j];
-                    System.out.format("%4d", rotatedColors[i][j]);
-                }
-                System.out.println();
-            }
-        } else if (rotation == 1) {
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j < SIZE; j++) {
-                    rotatedColors[i][j] = colors[SIZE - 1 - j][i];
-                    System.out.format("%4d", rotatedColors[i][j]);
-                }
-                System.out.println();
-            }
-        } else System.out.println("Такого варианта нет!");
+        Scanner sc = new Scanner(System.in);
+        int rotation = sc.nextInt();               // 3. Запрос угла у пользователя
+        int[][] result = rotateMatrix(colors, rotation);        // 4. создание нового массива и заполнение его данными исходного массива в зависимости от заданного угла
+        printMatrix(result);                              // 5. Отобразить получившийся массив
+    }
 
+
+    public static int[][] rotateMatrix(int[][] colors, int rotation) {
+
+        int[][] rotatedColors = new int[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                switch (rotation) {
+                    case 1:
+                        rotatedColors[i][j] = colors[SIZE - 1 - j][i];
+                        break;
+                    case 2:
+                        rotatedColors[i][j] = colors[SIZE - 1 - i][SIZE - 1 - j];
+                        break;
+                    case 3:
+                        rotatedColors[i][j] = colors[j][SIZE - 1 - i];
+                        break;
+                    default:
+                        rotatedColors[i][j] = colors[i][j];
+                }
+            }
+        }
+        return rotatedColors;
     }
 
     public static void printMatrix(int[][] colors) {
